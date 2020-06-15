@@ -1,0 +1,118 @@
+﻿@model CocktailMagician.Web.Models.BarViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var photoPath = "/images/" + (Model.PhotoPath ?? "noimage.jpg");
+    var star = "/images/star.png";
+}
+
+@section Styles {
+    <link href="@Url.Content("~/css/barDetails.css")" rel="stylesheet" type="text/css" />
+}
+
+<h2 class="title">@Model.Name</h2>
+<p class="averageRating">
+    @for (int i = 0; i < Model.AverageRating; i++)
+    {
+        <img src="@star" width="25" alt="rating" />
+    }
+</p>
+<img class="picture" alt="@Model.Name" src="@photoPath" width="300" height="200">
+
+<div class="caption-full">
+    <h3 class="about">About <span>&#9759;</span></h3>
+    <p class="info">@Model.Info</p>
+    @if (User.IsInRole("cocktail magician"))
+    {
+        <a asp-area="Admin" asp-controller="AddCocktailToBar" asp-action="AvailableCocktails" asp-route-barId="@Model.Id" class="btn btn-danger">Edit Available Cocktails</a>
+    }
+    <h3 class="cocktails">Avaiable Cocktails</h3>
+    @foreach (var item in Model.Cocktails)
+    {
+
+        <h4>
+            <a asp-controller="Cocktails" asp-action="GetCocktails" asp-route-cocktailName="@item.Name"> <span>🍸</span> @item.Name</a>
+        </h4>
+    }
+</div>
+
+
+<h3 class="warning">Leave a Comment      <span>&#9759;</span></h3>
+<div class="form-group">
+
+    @if (!(User.Identity.IsAuthenticated))
+    {
+        <h4 class="card-title"><a asp-area="Identity" asp-page="/Account/Login">Login</a> or <a asp-area="Identity" asp-page="/Account/Login">register</a> to add comments and rate</h4>
+    }
+    else
+    {
+
+        <input type="hidden" asp-for="@Model.CurrentComment" class="form-control">
+        @using (Html.BeginForm("AddComment", "Bars"))
+        {
+            <input type="hidden" asp-for="@Model.Id" value="@Model.Id" />
+
+            <input class=" form-control" id="CurrentComment" name="CurrentComment" type="text" placeholder="Write your Comment here" />
+            <input asp-area="Member" asp-controller="BarComment" asp-action="AddComment" type="submit" value="Submit" />
+
+        }
+        <form asp-area="Member" asp-controller="BarRating" asp-action="AddRating">
+            <fieldset class="rating" style="float: left; background-color: #8FA08B;">
+                <input type="hidden" asp-for="@Model.Id" value="@Model.Id" />
+                <link href="~/css/star.css" rel="stylesheet" type="text/css" />
+                <input type="submit" id="star5" name="SelectedRating" value="5" /><label class="full" for="star5"></label>
+                <input type="submit" id="star4half" name="SelectedRating" value="4.5" /><label class="half" for="star4half"></label>
+                <input type="submit" id="star4" name="SelectedRating" value="4" /><label class="full" for="star4"></label>
+                <input type="submit" id="star3half" name="SelectedRating" value="3.5" /><label class="half" for="star3half"></label>
+                <input type="submit" id="star3" name="SelectedRating" value="3" /><label class="full" for="star3"></label>
+                <input type="submit" id="star2half" name="SelectedRating" value="2.5" /><label class="half" for="star2half"></label>
+                <input type="submit" id="star2" name="SelectedRating" value="2" /><label class="full" for="star2"></label>
+                <input type="submit" id="star1half" name="SelectedRating" value="1.5" /><label class="half" for="star1half"></label>
+                <input type="submit" id="star1" name="SelectedRating" value="1" /><label class="full" for="star1"></label>
+                <input type="submit" id="starhalf" name="SelectedRating" value=".5" /><label class="half" for="starhalf"></label>
+            </fieldset>
+        </form>
+    }
+</div>
+<br />
+<div>
+    @if (Model.Comments.Count == 0 || Model.Comments == null)
+    {
+        <br />
+        <h4>Be the first to add a Comment!!!</h4>
+    }
+    else
+    {
+        <h4 class="comments">Comments:</h4>
+        <table class="table">
+            <tbody>
+                @foreach (var item in Model.Comments)
+                {
+                    <tr>
+
+                        <td class="author">
+                            @item.Author <br />
+                            @item.CreatedOn.ToString("dd MM yyyy HH:mm")
+                        </td>
+                        <td class="comment">
+                            @item.Text
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+</div>
+
+@if (User.IsInRole("cocktail magician"))
+{
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-danger">Edit</a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+    </div>
+}
+<a asp-action="Index" class="btn btn-warning">Back to List</a>
+

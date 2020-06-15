@@ -1,0 +1,46 @@
+﻿@model cloudscribe.Pagination.Models.PagedResult<CocktailViewModel>
+@{ 
+    ViewData["Controller"] = "Cocktails";
+    ViewData["Action"] = "Search";
+}
+<head>
+    <style>
+        .name, .rating, .ingredients {
+            font-family: Tahoma, Geneva, sans-serif;
+            font-size: 24px;
+            line-height: 2;
+        }
+        .information {
+            text-align: left;
+            font-size: 23px;
+            font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+        }
+
+    </style>
+</head>
+
+
+<div class="col-12">
+    <table class="table table-striped border">
+
+
+        @foreach (var item in Model.Data)
+        {
+            <tr>
+                <td><a asp-controller="Cocktails" asp-action="Details" asp-route-id="@item.Id"><img src="/storage/images/cocktails/@item.ImageUrl" width="150" height="200" /></a></td>
+                <td class="information">
+                    <b class="name">Name: </b>@Html.DisplayFor(m => item.Name)<br />
+                    @*<b>Comments</b>(@Html.DisplayFor(m => item.Comments.Count))<br />*@
+                    <b class="rating">Rating: </b>@Html.DisplayFor(m => item.AverageRating)<br />
+                </td>
+                <td class="information">
+                    <b class="ingredients">Ingredients: </b><br />@foreach (var ingridient in item.Ingredients)
+                    {
+                        <span>&#8211;</span> @Html.DisplayFor(m => ingridient)<br />
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<partial name="_PeginationPartial" view-data="ViewData" model="Model"/>
