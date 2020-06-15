@@ -1,15 +1,20 @@
 Project name:
+
 •	Cocktail Magician
 
 Description:
+
 Cocktail Magician is a web application for exploring recipes for exotic cocktails 
 and follows their distribution and success in amazing bars. The application 
 enables the users to see bars and the cocktails(with ingredients) they offer, rate 
 them and leave a comment for them.
 
 Access levels:
+
 •	Public part - Visible for all website visitors - no authentication required.
+
 •	Private part (Bar Crawlers) – with more access from public part
+
 •	Administration Part (Cocktail Magicians) – website administrators with full access
 
 Public part:
@@ -28,20 +33,36 @@ Private part (Bar Crawlers):
 - Leave a comment for a cocktail (maximum 500 characters)
 
 Administration Part (Cocktail Magicians):
+
 ●	Manage ingredients – CRUD operations for ingredients for cocktails (delete ingredient only if not used in any cocktail)
+
 ●	Manage cocktails – CRUD operations for cocktails (never delete a cocktail, just hide it from the users)
+
 ●	Manage bars – CRUD operations for bars (never delete a bar, just hide it from the users)
+
 ●	Set cocktails as available in particular bars 
 
+
 Technologies:
+
 •	ASP.NET Core
+
 •	ASP.NET Identity
+
 •	EntityFramework Core
+
 •	MS SQL Server
+
 •	MS Test
+
 •	HTML
+
 •	CSS
+
 •	Bootstrap
+
 •	CloudScribe - for pegination
+
 •	Git
+
 
