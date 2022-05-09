@@ -61,7 +61,7 @@ Technologies:
 
 •	Bootstrap
 
-•	CloudScribe - for pegination
+•	CloudScribe
 
 •	Git
 
